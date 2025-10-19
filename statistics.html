@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>调查统计结果 - 在线学习平台问卷</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+        }
+        
+        .header-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+        }
+        
+        .stats-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .chart-container {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .chart-title {
+            color: #667eea;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .chart-wrapper {
+            position: relative;
+            height: 350px;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid #f0f0f0;
+        }
+        
+        .btn {
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        @media (max-width: 768px) {
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 在线学习平台调查统计结果</h1>
+            <p class="header-subtitle">基于100份有效问卷的数据分析</p>
+        </div>
+        
+        <div class="stats-summary">
+            <div class="stat-card">
+                <div class="stat-number">100</div>
+                <div class="stat-label">总样本量</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">17</div>
+                <div class="stat-label">问题总数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3.2</div>
+                <div class="stat-label">平均满意度 (满分5分)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">8+</div>
+                <div class="stat-label">主流平台覆盖</div>
+            </div>
+        </div>
+        
+        <div class="chart-grid">
+            <div class="chart-container">
+                <h3 class="chart-title">性别分布</h3>
+                <div class="chart-wrapper">
+                    <canvas id="genderChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <h3 class="chart-title">年龄段分布</h3>
+                <div class="chart-wrapper">
+                    <canvas id="ageChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <h3 class="chart-title">学历分布</h3>
+                <div class="chart-wrapper">
+                    <canvas id="educationChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <h3 class="chart-title">职业分布</h3>
+                <div class="chart-wrapper">
+                    <canvas id="occupationChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <h3 class="chart-title">每周使用时长分布</h3>
+                <div class="chart-wrapper">
+                    <canvas id="usageTimeChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <h3 class="chart-title">平台使用情况 (Top 10)</h3>
+                <div class="chart-wrapper">
+                    <canvas id="platformChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <h3 class="chart-title">整体满意度</h3>
+                <div class="chart-wrapper">
+                    <canvas id="satisfactionChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <h3 class="chart-title">课程内容质量评价</h3>
+                <div class="chart-wrapper">
+                    <canvas id="contentQualityChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <h3 class="chart-title">用户界面设计评价</h3>
+                <div class="chart-wrapper">
+                    <canvas id="uiDesignChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <h3 class="chart-title">学习进度跟踪功能有效性</h3>
+                <div class="chart-wrapper">
+                    <canvas id="progressTrackingChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <h3 class="chart-title">技术问题遇到频率</h3>
+                <div class="chart-wrapper">
+                    <canvas id="technicalIssuesChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <h3 class="chart-title">支付意愿</h3>
+                <div class="chart-wrapper">
+                    <canvas id="paymentWillingnessChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="button-group">
+            <a href="index.html" class="btn btn-primary">返回首页</a>
+            <a href="questionnaire.html" class="btn btn-primary">填写问卷</a>
+        </div>
+    </div>
+    
+    <script>
+        // Chart.js default configuration
+        Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif";
+        Chart.defaults.color = '#666';
+        
+        const chartColors = {
+            primary: '#667eea',
+            secondary: '#764ba2',
+            success: '#4caf50',
+            warning: '#ff9800',
+            danger: '#f44336',
+            info: '#2196f3',
+            palette: ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#43e97b', '#fa709a', '#fee140', '#30cfd0']
+        };
+        
+        // Gender Distribution (性别分布)
+        const genderCtx = document.getElementById('genderChart').getContext('2d');
+        new Chart(genderCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['男', '女', '其他'],
+                datasets: [{
+                    data: [30, 30, 40],
+                    backgroundColor: [chartColors.primary, chartColors.secondary, chartColors.palette[2]],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 15,
+                            font: {
+                                size: 13
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Age Distribution (年龄段分布)
+        const ageCtx = document.getElementById('ageChart').getContext('2d');
+        new Chart(ageCtx, {
+            type: 'bar',
+            data: {
+                labels: ['18岁以下', '18-24岁', '25-34岁', '35-44岁', '45岁及以上'],
+                datasets: [{
+                    label: '人数',
+                    data: [20, 21, 21, 21, 17],
+                    backgroundColor: chartColors.primary,
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 5
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Education Distribution (学历分布)
+        const educationCtx = document.getElementById('educationChart').getContext('2d');
+        new Chart(educationCtx, {
+            type: 'pie',
+            data: {
+                labels: ['高中及以下', '专科', '本科', '硕士', '博士及以上'],
+                datasets: [{
+                    data: [13, 17, 16, 24, 30],
+                    backgroundColor: chartColors.palette,
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 10,
+                            font: {
+                                size: 12
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Occupation Distribution (职业分布)
+        const occupationCtx = document.getElementById('occupationChart').getContext('2d');
+        new Chart(occupationCtx, {
+            type: 'bar',
+            data: {
+                labels: ['学生', '教育/科研', 'IT/互联网', '医疗/健康', '金融', '其他'],
+                datasets: [{
+                    label: '人数',
+                    data: [13, 16, 10, 27, 17, 17],
+                    backgroundColor: chartColors.secondary,
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        
+        // Usage Time Distribution (使用时长分布)
+        const usageTimeCtx = document.getElementById('usageTimeChart').getContext('2d');
+        new Chart(usageTimeCtx, {
+            type: 'bar',
+            data: {
+                labels: ['几乎不用', '1小时以下', '1-3小时', '3-6小时', '6小时以上'],
+                datasets: [{
+                    label: '人数',
+                    data: [10, 19, 32, 19, 20],
+                    backgroundColor: chartColors.info,
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 5
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Platform Usage (平台使用情况)
+        const platformCtx = document.getElementById('platformChart').getContext('2d');
+        new Chart(platformCtx, {
+            type: 'bar',
+            data: {
+                labels: ['网易云课堂', '腾讯课堂', 'B站', '中国大学MOOC', '学堂在线', 'edX', 'Coursera', '其他'],
+                datasets: [{
+                    label: '使用人数',
+                    data: [31, 30, 26, 26, 25, 21, 20, 17],
+                    backgroundColor: chartColors.success,
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 5
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Overall Satisfaction (整体满意度)
+        const satisfactionCtx = document.getElementById('satisfactionChart').getContext('2d');
+        new Chart(satisfactionCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['非常不满意', '不满意', '一般', '满意', '非常满意'],
+                datasets: [{
+                    data: [14, 15, 16, 30, 25],
+                    backgroundColor: [
+                        chartColors.danger,
+                        chartColors.warning,
+                        '#9e9e9e',
+                        chartColors.success,
+                        chartColors.primary
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 10,
+                            font: {
+                                size: 11
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Content Quality (课程内容质量)
+        const contentQualityCtx = document.getElementById('contentQualityChart').getContext('2d');
+        new Chart(contentQualityCtx, {
+            type: 'bar',
+            data: {
+                labels: ['非常差', '较差', '一般', '较好', '非常好'],
+                datasets: [{
+                    label: '人数',
+                    data: [21, 28, 22, 18, 11],
+                    backgroundColor: chartColors.warning,
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 5
+                        }
+                    }
+                }
+            }
+        });
+        
+        // UI Design (用户界面设计)
+        const uiDesignCtx = document.getElementById('uiDesignChart').getContext('2d');
+        new Chart(uiDesignCtx, {
+            type: 'bar',
+            data: {
+                labels: ['非常不美观/难用', '不美观/难用', '一般', '美观/易用', '非常美观/易用'],
+                datasets: [{
+                    label: '人数',
+                    data: [18, 18, 27, 17, 20],
+                    backgroundColor: chartColors.palette[3],
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 5
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Progress Tracking (学习进度跟踪)
+        const progressTrackingCtx = document.getElementById('progressTrackingChart').getContext('2d');
+        new Chart(progressTrackingCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['非常无效', '无效', '一般', '有效', '非常有效'],
+                datasets: [{
+                    data: [18, 11, 22, 25, 24],
+                    backgroundColor: [
+                        chartColors.danger,
+                        chartColors.warning,
+                        '#9e9e9e',
+                        chartColors.success,
+                        chartColors.primary
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 10,
+                            font: {
+                                size: 11
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Technical Issues (技术问题频率)
+        const technicalIssuesCtx = document.getElementById('technicalIssuesChart').getContext('2d');
+        new Chart(technicalIssuesCtx, {
+            type: 'polarArea',
+            data: {
+                labels: ['总是遇到', '经常遇到', '偶尔遇到', '很少遇到', '从未遇到'],
+                datasets: [{
+                    data: [9, 29, 26, 13, 23],
+                    backgroundColor: [
+                        'rgba(244, 67, 54, 0.7)',
+                        'rgba(255, 152, 0, 0.7)',
+                        'rgba(158, 158, 158, 0.7)',
+                        'rgba(76, 175, 80, 0.7)',
+                        'rgba(102, 126, 234, 0.7)'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 10,
+                            font: {
+                                size: 11
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Payment Willingness (支付意愿)
+        const paymentWillingnessCtx = document.getElementById('paymentWillingnessChart').getContext('2d');
+        new Chart(paymentWillingnessCtx, {
+            type: 'pie',
+            data: {
+                labels: ['是', '否', '不确定'],
+                datasets: [{
+                    data: [37, 34, 29],
+                    backgroundColor: [chartColors.success, chartColors.danger, chartColors.warning],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 15,
+                            font: {
+                                size: 14
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
