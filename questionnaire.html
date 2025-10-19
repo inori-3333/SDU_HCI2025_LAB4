@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在线学习平台问卷调查</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+        }
+        
+        .header-subtitle {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        .section {
+            margin-bottom: 2.5rem;
+        }
+        
+        .section-title {
+            color: #667eea;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .question {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #333;
+            font-size: 1.05rem;
+        }
+        
+        .options {
+            margin-left: 1rem;
+        }
+        
+        .option {
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        input[type="radio"],
+        input[type="checkbox"] {
+            margin-right: 0.75rem;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .option label {
+            cursor: pointer;
+            user-select: none;
+            flex: 1;
+        }
+        
+        .other-input {
+            margin-top: 0.5rem;
+            margin-left: 2rem;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #f0f0f0;
+        }
+        
+        .btn {
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+        
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            margin-top: 2rem;
+            color: #155724;
+        }
+        
+        .success-message.show {
+            display: block;
+        }
+        
+        .required {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>在线学习平台用户体验问卷调查</h1>
+            <p class="header-subtitle">感谢您参与本次问卷调查，您的意见对我们非常重要</p>
+        </div>
+        
+        <form id="questionnaireForm">
+            <!-- Section 1: Demographic Information -->
+            <div class="section">
+                <h2 class="section-title">1. 基本信息 (Demographic Information)</h2>
+                
+                <div class="question">
+                    <div class="question-text">1. 您的性别是？ <span class="required">*</span></div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="gender-male" name="gender" value="male" required>
+                            <label for="gender-male">男</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="gender-female" name="gender" value="female" required>
+                            <label for="gender-female">女</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="gender-other" name="gender" value="other" required>
+                            <label for="gender-other">其他</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">2. 您的年龄段是？ <span class="required">*</span></div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="age-1" name="age" value="under18" required>
+                            <label for="age-1">18岁以下</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="age-2" name="age" value="18-24" required>
+                            <label for="age-2">18-24岁</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="age-3" name="age" value="25-34" required>
+                            <label for="age-3">25-34岁</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="age-4" name="age" value="35-44" required>
+                            <label for="age-4">35-44岁</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="age-5" name="age" value="45+" required>
+                            <label for="age-5">45岁及以上</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">3. 您的最高学历是？ <span class="required">*</span></div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="edu-1" name="education" value="highschool" required>
+                            <label for="edu-1">高中及以下</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="edu-2" name="education" value="college" required>
+                            <label for="edu-2">专科</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="edu-3" name="education" value="bachelor" required>
+                            <label for="edu-3">本科</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="edu-4" name="education" value="master" required>
+                            <label for="edu-4">硕士</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="edu-5" name="education" value="phd" required>
+                            <label for="edu-5">博士及以上</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">4. 您的职业是？ <span class="required">*</span></div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="job-1" name="occupation" value="student" required>
+                            <label for="job-1">学生</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="job-2" name="occupation" value="education" required>
+                            <label for="job-2">教育/科研人员</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="job-3" name="occupation" value="it" required>
+                            <label for="job-3">IT/互联网从业者</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="job-4" name="occupation" value="medical" required>
+                            <label for="job-4">医疗/健康从业者</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="job-5" name="occupation" value="finance" required>
+                            <label for="job-5">金融从业者</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="job-6" name="occupation" value="other" required>
+                            <label for="job-6">其他</label>
+                        </div>
+                        <div class="other-input">
+                            <input type="text" id="occupation-other" name="occupation_other" placeholder="请注明：">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">5. 您平均每周使用在线学习平台的时间是？ <span class="required">*</span></div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="time-1" name="usage_time" value="rarely" required>
+                            <label for="time-1">几乎不用</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="time-2" name="usage_time" value="under1" required>
+                            <label for="time-2">1小时以下</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="time-3" name="usage_time" value="1-3" required>
+                            <label for="time-3">1-3小时</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="time-4" name="usage_time" value="3-6" required>
+                            <label for="time-4">3-6小时</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="time-5" name="usage_time" value="over6" required>
+                            <label for="time-5">6小时以上</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Section 2: Platform Usage & Satisfaction -->
+            <div class="section">
+                <h2 class="section-title">2. 平台使用与满意度 (Platform Usage & Satisfaction)</h2>
+                <p style="margin-bottom: 1.5rem; color: #666;">请根据您使用在线学习平台的经验，选择最符合您情况的选项。</p>
+                
+                <div class="question">
+                    <div class="question-text">6. 您通常使用哪些在线学习平台？ (可多选) <span class="required">*</span></div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="checkbox" id="platform-1" name="platforms" value="coursera">
+                            <label for="platform-1">Coursera</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" id="platform-2" name="platforms" value="edx">
+                            <label for="platform-2">edX</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" id="platform-3" name="platforms" value="xuetangx">
+                            <label for="platform-3">学堂在线</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" id="platform-4" name="platforms" value="icourse163">
+                            <label for="platform-4">中国大学MOOC</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" id="platform-5" name="platforms" value="163study">
+                            <label for="platform-5">网易云课堂</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" id="platform-6" name="platforms" value="tencent">
+                            <label for="platform-6">腾讯课堂</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" id="platform-7" name="platforms" value="bilibili">
+                            <label for="platform-7">B站 (Bilibili)</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" id="platform-8" name="platforms" value="other">
+                            <label for="platform-8">其他</label>
+                        </div>
+                        <div class="other-input">
+                            <input type="text" id="platforms-other" name="platforms_other" placeholder="请注明：">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">7. 您对目前使用的在线学习平台的整体满意度如何？ <span class="required">*</span></div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="satisfaction-1" name="overall_satisfaction" value="very_unsatisfied" required>
+                            <label for="satisfaction-1">非常不满意</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="satisfaction-2" name="overall_satisfaction" value="unsatisfied" required>
+                            <label for="satisfaction-2">不满意</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="satisfaction-3" name="overall_satisfaction" value="neutral" required>
+                            <label for="satisfaction-3">一般</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="satisfaction-4" name="overall_satisfaction" value="satisfied" required>
+                            <label for="satisfaction-4">满意</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="satisfaction-5" name="overall_satisfaction" value="very_satisfied" required>
+                            <label for="satisfaction-5">非常满意</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">8. 您认为在线学习平台提供的课程内容质量如何？ <span class="required">*</span></div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="content-1" name="content_quality" value="very_poor" required>
+                            <label for="content-1">非常差</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="content-2" name="content_quality" value="poor" required>
+                            <label for="content-2">较差</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="content-3" name="content_quality" value="average" required>
+                            <label for="content-3">一般</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="content-4" name="content_quality" value="good" required>
+                            <label for="content-4">较好</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="content-5" name="content_quality" value="very_good" required>
+                            <label for="content-5">非常好</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">9. 您认为在线学习平台的用户界面设计（如布局、配色、字体）是否美观易用？ <span class="required">*</span></div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="ui-1" name="ui_design" value="very_poor" required>
+                            <label for="ui-1">非常不美观/难用</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="ui-2" name="ui_design" value="poor" required>
+                            <label for="ui-2">不美观/难用</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="ui-3" name="ui_design" value="average" required>
+                            <label for="ui-3">一般</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="ui-4" name="ui_design" value="good" required>
+                            <label for="ui-4">美观/易用</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="ui-5" name="ui_design" value="very_good" required>
+                            <label for="ui-5">非常美观/易用</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">10. 您认为在线学习平台的学习进度跟踪功能（如学习时长、完成度）是否有效？ <span class="required">*</span></div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="progress-1" name="progress_tracking" value="very_ineffective" required>
+                            <label for="progress-1">非常无效</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="progress-2" name="progress_tracking" value="ineffective" required>
+                            <label for="progress-2">无效</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="progress-3" name="progress_tracking" value="average" required>
+                            <label for="progress-3">一般</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="progress-4" name="progress_tracking" value="effective" required>
+                            <label for="progress-4">有效</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="progress-5" name="progress_tracking" value="very_effective" required>
+                            <label for="progress-5">非常有效</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">11. 您认为在线学习平台的互动功能（如讨论区、问答、直播互动）是否能满足您的需求？ <span class="required">*</span></div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="interaction-1" name="interaction" value="not_at_all" required>
+                            <label for="interaction-1">完全不能</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="interaction-2" name="interaction" value="rarely" required>
+                            <label for="interaction-2">较少能</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="interaction-3" name="interaction" value="sometimes" required>
+                            <label for="interaction-3">一般</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="interaction-4" name="interaction" value="often" required>
+                            <label for="interaction-4">较好能</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="interaction-5" name="interaction" value="completely" required>
+                            <label for="interaction-5">完全能</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">12. 您在使用在线学习平台时，是否经常遇到技术问题（如视频卡顿、页面加载慢、功能失效）？ <span class="required">*</span></div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="technical-1" name="technical_issues" value="always" required>
+                            <label for="technical-1">总是遇到</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="technical-2" name="technical_issues" value="often" required>
+                            <label for="technical-2">经常遇到</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="technical-3" name="technical_issues" value="sometimes" required>
+                            <label for="technical-3">偶尔遇到</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="technical-4" name="technical_issues" value="rarely" required>
+                            <label for="technical-4">很少遇到</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="technical-5" name="technical_issues" value="never" required>
+                            <label for="technical-5">从未遇到</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">13. 您认为在线学习平台的客户服务或帮助中心是否能及时有效地解决您的问题？ <span class="required">*</span></div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="support-1" name="customer_support" value="not_at_all" required>
+                            <label for="support-1">完全不能</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="support-2" name="customer_support" value="rarely" required>
+                            <label for="support-2">较少能</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="support-3" name="customer_support" value="sometimes" required>
+                            <label for="support-3">一般</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="support-4" name="customer_support" value="often" required>
+                            <label for="support-4">较好能</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="support-5" name="customer_support" value="completely" required>
+                            <label for="support-5">完全能</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Section 3: Improvement Needs & Suggestions -->
+            <div class="section">
+                <h2 class="section-title">3. 改进需求与建议 (Improvement Needs & Suggestions)</h2>
+                
+                <div class="question">
+                    <div class="question-text">14. 如果您可以在线学习平台改进一个方面，您最希望改进什么？ (请简要描述)</div>
+                    <textarea id="improvement" name="improvement" placeholder="请在此输入您的建议..."></textarea>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">15. 您认为在线学习平台可以如何更好地激励用户持续学习？ (可多选)</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="checkbox" id="motivation-1" name="motivation" value="rewards">
+                            <label for="motivation-1">增加学习奖励机制（如积分、证书）</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" id="motivation-2" name="motivation" value="personalization">
+                            <label for="motivation-2">优化课程推荐算法，提供更个性化的内容</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" id="motivation-3" name="motivation" value="social">
+                            <label for="motivation-3">增强社交互动功能，促进学习者交流</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" id="motivation-4" name="motivation" value="flexibility">
+                            <label for="motivation-4">提供更灵活的学习路径和时间安排</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" id="motivation-5" name="motivation" value="mobile">
+                            <label for="motivation-5">改善移动端体验，方便碎片化学习</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" id="motivation-6" name="motivation" value="other">
+                            <label for="motivation-6">其他</label>
+                        </div>
+                        <div class="other-input">
+                            <input type="text" id="motivation-other" name="motivation_other" placeholder="请注明：">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">16. 您是否愿意为更高质量的在线学习体验支付额外费用？ <span class="required">*</span></div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="payment-1" name="payment_willingness" value="yes" required>
+                            <label for="payment-1">是</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="payment-2" name="payment_willingness" value="no" required>
+                            <label for="payment-2">否</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="payment-3" name="payment_willingness" value="uncertain" required>
+                            <label for="payment-3">不确定</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">17. 您对在线学习平台还有哪些其他的建议或意见？ (开放性问题)</div>
+                    <textarea id="other_suggestions" name="other_suggestions" placeholder="请在此输入您的建议或意见..."></textarea>
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <a href="index.html" class="btn btn-secondary">返回首页</a>
+                <button type="submit" class="btn btn-primary">提交问卷</button>
+            </div>
+        </form>
+        
+        <div id="successMessage" class="success-message">
+            <h2>✓ 问卷提交成功！</h2>
+            <p>感谢您的参与，您的意见对我们非常重要！</p>
+            <p style="margin-top: 1rem;">
+                <a href="index.html" class="btn btn-primary" style="display: inline-block; margin-top: 1rem;">返回首页</a>
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('questionnaireForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate required checkboxes (question 6)
+            const platformCheckboxes = document.querySelectorAll('input[name="platforms"]:checked');
+            if (platformCheckboxes.length === 0) {
+                alert('请至少选择一个在线学习平台！');
+                return;
+            }
+            
+            // Collect form data
+            const formData = new FormData(this);
+            const data = {};
+            
+            // Process checkboxes
+            const platforms = [];
+            formData.getAll('platforms').forEach(val => platforms.push(val));
+            data.platforms = platforms;
+            
+            const motivation = [];
+            formData.getAll('motivation').forEach(val => motivation.push(val));
+            data.motivation = motivation;
+            
+            // Process other fields
+            for (let [key, value] of formData.entries()) {
+                if (key !== 'platforms' && key !== 'motivation') {
+                    data[key] = value;
+                }
+            }
+            
+            // Log the data (in a real application, you would send this to a server)
+            console.log('Survey Data:', data);
+            
+            // Show success message
+            document.getElementById('questionnaireForm').style.display = 'none';
+            document.getElementById('successMessage').classList.add('show');
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        
+        // Show/hide other input fields based on selection
+        document.getElementById('job-6').addEventListener('change', function() {
+            document.getElementById('occupation-other').style.display = this.checked ? 'block' : 'none';
+        });
+        
+        document.getElementById('platform-8').addEventListener('change', function() {
+            document.getElementById('platforms-other').style.display = this.checked ? 'block' : 'none';
+        });
+        
+        document.getElementById('motivation-6').addEventListener('change', function() {
+            document.getElementById('motivation-other').style.display = this.checked ? 'block' : 'none';
+        });
+    </script>
+</body>
+</html>
